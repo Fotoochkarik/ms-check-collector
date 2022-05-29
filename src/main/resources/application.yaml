@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DATASOURCE_HOST:localhost}:5444/receipt
+    username: user
+    password: password
+  liquibase:
+    enabled: true
+    change-log: 'classpath:db/changelog/db.changelog-master.yaml'
+    default-schema: receipt
+    liquibase-schema: receipt
