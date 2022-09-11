@@ -1,10 +1,12 @@
 spring:
+  jackson:
+    default-property-inclusion: non_null
   datasource:
-    url: jdbc:postgresql://${DATASOURCE_HOST:localhost}:5444/receipt
-    username: user
-    password: password
+    url: jdbc:postgresql://${DATASOURCE_HOST:localhost}:5432/${app.db.name}
+    username: ${app.db.username}
+    password: ${app.db.password}
   liquibase:
     enabled: true
     change-log: 'classpath:db/changelog/db.changelog-master.yaml'
-    default-schema: receipt
-    liquibase-schema: receipt
+    default-schema: ${app.db.name-shema}
+    liquibase-schema: ${app.db.name-shema}

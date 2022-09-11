@@ -1,3 +1,19 @@
 databaseChangeLog:
   - include:
       file: /db/changelog/1.0.0/0.0.1-init.sql
+  - include:
+      file: /db/changelog/1.0.0/0.0.2-create-table-item.sql
+  - include:
+      file: /db/changelog/1.0.0/0.0.3-create-tables-receipt-and-meta_data.sql
+  - include:
+      file: /db/changelog/1.0.0/0.0.4-drop-columns-table-receipt.sql
+  - include:
+      file: /db/changelog/1.0.0/0.0.5-change-tepy-column-date-time-receipt.sql
+  - include:
+      file: /db/changelog/1.0.0/0.0.6-rename-column-ecash_total_sum-receipt.sql
+  - include:
+      file: /db/changelog/1.0.0/0.0.7-add-column-external_id-to-meta_data.sql
+  - include:
+      file: /db/changelog/1.0.0/0.0.8-add-fk_receipt_items.sql
+  - include:
+      file: /db/changelog/1.0.0/0.0.9-add-uk_receipt_date.sql

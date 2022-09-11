@@ -1,11 +1,13 @@
 package ru.fotoochkarik.checkcollector.data.model;
 
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -25,5 +27,11 @@ public class ReceiptTemp {
 
   @Column(name = "data")
   private String data;
+
+  @Column(name = "created")
+  private LocalDateTime created;
+
+  @Column(name = "request", unique = true)
+  private String request;
 
 }
