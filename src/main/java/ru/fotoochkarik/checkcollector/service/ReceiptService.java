@@ -40,16 +40,17 @@ public class ReceiptService {
     receiptTempRepository.save(receiptTemp);
   }
 
-  public String getJson(String qrraw){
-    var requestInfo = feignService.createRequestInfo(qrraw);
+  public String getJson(String request){
+    var requestInfo = feignService.createRequestInfo(request);
     return feignClient.getJsonChek(requestInfo);
   }
 
 
-  public Receipt saveReceipt(String qrraw) throws JsonProcessingException {
-    var request = feignService.createRequestInfo(qrraw);
+  public Receipt saveReceipt(String requestStr) throws JsonProcessingException {
+    log.info("ReceiptService:: saveReceipt request = {} " , requestStr);
+    var request = feignService.createRequestInfo(requestStr);
     var receiptInfo = feignClient.getReceiptInfo(request);
-    saveReceiptTemp(receiptInfo, qrraw);
+    saveReceiptTemp(receiptInfo, requestStr);
     return saveReceipt(receiptInfo);
   }
 

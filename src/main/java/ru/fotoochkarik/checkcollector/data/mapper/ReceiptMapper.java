@@ -4,6 +4,7 @@ import static java.util.Objects.nonNull;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import ru.fotoochkarik.checkcollector.data.dto.request.ReceiptShortInfo;
 import ru.fotoochkarik.checkcollector.data.dto.response.BodyReceiptInfo;
 import ru.fotoochkarik.checkcollector.data.model.Receipt;
 
@@ -25,10 +26,10 @@ public interface ReceiptMapper {
   @Mapping(target = "provisionSum", expression = "java(this.convert(bodyReceiptInfo.provisionSum()))")
   Receipt toReceipt(BodyReceiptInfo bodyReceiptInfo);
 
-  @Mapping(target = "metadata.id", source = "metadata.externalId")
-  BodyReceiptInfo toBodyReceiptInfo(Receipt receipt);
+  ReceiptShortInfo toReceiptShortInfo(Receipt receipt);
 
   default Double convert(Float date) {
     return nonNull(date) ? (double) date / 100 : null;
   }
+
 }

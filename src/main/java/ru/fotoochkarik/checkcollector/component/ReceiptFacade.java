@@ -2,7 +2,9 @@ package ru.fotoochkarik.checkcollector.component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import ru.fotoochkarik.checkcollector.data.dto.request.ReceiptShortInfo;
 import ru.fotoochkarik.checkcollector.data.dto.response.BodyReceiptInfo;
 import ru.fotoochkarik.checkcollector.data.mapper.ReceiptMapper;
 import ru.fotoochkarik.checkcollector.service.ReceiptService;
@@ -12,6 +14,7 @@ import ru.fotoochkarik.checkcollector.service.ReceiptService;
  * @version 1.0.0
  * @since 1.0.0
  */
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class ReceiptFacade {
@@ -19,9 +22,10 @@ public class ReceiptFacade {
   private final ReceiptService receiptService;
   private final ReceiptMapper receiptMapper;
 
-  public BodyReceiptInfo saveReceipt(String qrraw) throws JsonProcessingException {
-    var receipt = receiptService.saveReceipt(qrraw);
-    return receiptMapper.toBodyReceiptInfo(receipt);
+  public ReceiptShortInfo saveReceipt(String request) throws JsonProcessingException {
+    log.info("ReceiptFacade:: saveReceipt request = {} " , request);
+    var receipt = receiptService.saveReceipt(request);
+    return receiptMapper.toReceiptShortInfo(receipt);
   }
 
 }

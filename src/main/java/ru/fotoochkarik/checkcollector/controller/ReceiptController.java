@@ -6,10 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.fotoochkarik.checkcollector.component.ReceiptFacade;
+import ru.fotoochkarik.checkcollector.data.dto.request.ReceiptShortInfo;
 import ru.fotoochkarik.checkcollector.data.dto.request.SaveRequest;
 import ru.fotoochkarik.checkcollector.data.dto.response.BodyReceiptInfo;
 import ru.fotoochkarik.checkcollector.service.ReceiptService;
@@ -35,7 +37,8 @@ public class ReceiptController {
   }
 
   @PostMapping
-  public ResponseEntity<BodyReceiptInfo> save(SaveRequest saveRequest) throws JsonProcessingException {
+  public ResponseEntity<ReceiptShortInfo> save(@RequestBody SaveRequest saveRequest) throws JsonProcessingException {
+    log.info("ReceiptController:: save request qrraw = {} " , saveRequest.qrraw());
     return ResponseEntity.ok(receiptFacade.saveReceipt(saveRequest.qrraw()));
   }
 
