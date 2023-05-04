@@ -4,6 +4,7 @@ import static java.util.Objects.nonNull;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import ru.fotoochkarik.checkcollector.data.dto.request.ExpenseRequest;
 import ru.fotoochkarik.checkcollector.data.dto.request.ReceiptShortInfo;
 import ru.fotoochkarik.checkcollector.data.dto.response.BodyReceiptInfo;
 import ru.fotoochkarik.checkcollector.data.model.Receipt;
@@ -28,8 +29,13 @@ public interface ReceiptMapper {
 
   ReceiptShortInfo toReceiptShortInfo(Receipt receipt);
 
-  default Double convert(Float date) {
-    return nonNull(date) ? (double) date / 100 : null;
+  default Double convert(Float value) {
+    return nonNull(value) ? (double) value / 100 : null;
   }
+
+  @Mapping(target = "sum", source = "totalSum")
+  @Mapping(target = "payDate", source = "metadata.receiveDate")
+  @Mapping(target = "type", constant = "EVERYDAY")
+  ExpenseRequest toExpenseRequest(Receipt receipt);
 
 }

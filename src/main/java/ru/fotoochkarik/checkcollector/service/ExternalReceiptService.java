@@ -8,17 +8,13 @@ import ru.fotoochkarik.checkcollector.data.dto.request.RequestInfo;
 
 @Slf4j
 @Service
-public class FeignService {
+public class ExternalReceiptService {
 
-  @Value("${app.proverkacheka.token}")
+  @Value("${feign.proverkacheka.token}")
   private String token;
 
   public RequestInfo createRequestInfo(String qrraw) {
-    RequestInfo requestInfo = new RequestInfo();
-    requestInfo.setRequest(qrraw);
-    requestInfo.setQr("3");
-    requestInfo.setToken(token);
-    return requestInfo;
+    return new RequestInfo(qrraw, "3", token);
   }
 
 

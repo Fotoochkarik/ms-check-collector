@@ -1,10 +1,8 @@
 plugins {
     id 'java'
-    id 'idea'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version '2.7.11'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'io.freefair.lombok' version '6.3.0'
-    id 'org.springframework.boot' version '2.6.4'
-    id "maven-publish"
 }
 
 group = 'ru.fotoochkarik'
@@ -27,6 +25,7 @@ dependencies {
 
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    implementation 'org.springframework.cloud:spring-cloud-starter-config:3.0.0'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
@@ -45,13 +44,6 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-}
-
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
@@ -68,4 +60,13 @@ tasks.withType(Test) {
 
 javadoc {
     options.encoding = 'UTF-8'
+}
+
+jar {
+    enabled = true
+}
+
+bootJar {
+    archiveFileName = 'ms-check-collector.jar'
+    launchScript()
 }

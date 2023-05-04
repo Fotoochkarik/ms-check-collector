@@ -17,3 +17,5 @@ databaseChangeLog:
       file: /db/changelog/1.0.0/0.0.8-add-fk_receipt_items.sql
   - include:
       file: /db/changelog/1.0.0/0.0.9-add-uk_receipt_date.sql
+  - include:
+      file: /db/changelog/1.0.0/0.0.10-change-column_type.sql

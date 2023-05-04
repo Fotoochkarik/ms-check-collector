@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.fotoochkarik.checkcollector.component.ReceiptFacade;
 import ru.fotoochkarik.checkcollector.data.dto.request.ReceiptShortInfo;
 import ru.fotoochkarik.checkcollector.data.dto.request.SaveRequest;
-import ru.fotoochkarik.checkcollector.data.dto.response.BodyReceiptInfo;
 import ru.fotoochkarik.checkcollector.service.ReceiptService;
 
 /**
@@ -38,7 +37,7 @@ public class ReceiptController {
 
   @PostMapping
   public ResponseEntity<ReceiptShortInfo> save(@RequestBody SaveRequest saveRequest) throws JsonProcessingException {
-    log.info("ReceiptController:: save request qrraw = {} " , saveRequest.qrraw());
+    log.info("ReceiptController:: save request qrraw = {} ", saveRequest.qrraw());
     return ResponseEntity.ok(receiptFacade.saveReceipt(saveRequest.qrraw()));
   }
 

@@ -1,4 +1,4 @@
-package ru.fotoochkarik.checkcollector.service;
+package ru.fotoochkarik.checkcollector.integration.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -8,9 +8,9 @@ import ru.fotoochkarik.checkcollector.data.dto.response.ReceiptInfo;
 
 @FeignClient(
     value = "proverka-cheka",
-    url = "https://proverkacheka.com/api/v1/check/get"
+    url = "${feign.proverkacheka.host}"
 )
-public interface ProverkaChekaFeignClient {
+public interface ExternalReceiptClient {
 
   @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   ReceiptInfo getReceiptInfo(RequestInfo post);

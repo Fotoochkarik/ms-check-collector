@@ -13,6 +13,7 @@ import ru.fotoochkarik.checkcollector.data.model.Receipt;
 import ru.fotoochkarik.checkcollector.data.model.ReceiptTemp;
 import ru.fotoochkarik.checkcollector.data.repository.ReceiptRepository;
 import ru.fotoochkarik.checkcollector.data.repository.ReceiptTempRepository;
+import ru.fotoochkarik.checkcollector.integration.feign.ExternalReceiptClient;
 
 @Slf4j
 @Service
@@ -20,9 +21,9 @@ import ru.fotoochkarik.checkcollector.data.repository.ReceiptTempRepository;
 public class ReceiptService {
 
   private final ReceiptTempRepository receiptTempRepository;
-  private final ProverkaChekaFeignClient feignClient;
+  private final ExternalReceiptClient receiptClient;
   private final ReceiptRepository receiptRepository;
-  private final FeignService feignService;
+  private final ExternalReceiptService externalReceiptService;
   private final ObjectMapper objectMapper;
   private final ReceiptMapper receiptMapper;
 
@@ -37,19 +38,22 @@ public class ReceiptService {
     receiptTemp.setRequest(request);
     receiptTemp.setCreated(LocalDateTime.now());
     receiptTemp.setData(json);
-    receiptTempRepository.save(receiptTemp);
+    var exists = receiptTempRepository.existsByRequest(receiptTemp.getRequest());
+    if (!exists) {
+      receiptTempRepository.save(receiptTemp);
+    }
   }
 
-  public String getJson(String request){
-    var requestInfo = feignService.createRequestInfo(request);
-    return feignClient.getJsonChek(requestInfo);
+  public String getJson(String request) {
+    var requestInfo = externalReceiptService.createRequestInfo(request);
+    return receiptClient.getJsonChek(requestInfo);
   }
 
 
   public Receipt saveReceipt(String requestStr) throws JsonProcessingException {
-    log.info("ReceiptService:: saveReceipt request = {} " , requestStr);
-    var request = feignService.createRequestInfo(requestStr);
-    var receiptInfo = feignClient.getReceiptInfo(request);
+    log.info("ReceiptService:: saveReceipt request = {} ", requestStr);
+    var request = externalReceiptService.createRequestInfo(requestStr);
+    var receiptInfo = receiptClient.getReceiptInfo(request);
     saveReceiptTemp(receiptInfo, requestStr);
     return saveReceipt(receiptInfo);
   }
@@ -59,6 +63,10 @@ public class ReceiptService {
     var receipt = receiptMapper.toReceipt(receiptInfo.dataInfo().bodyReceiptInfo());
     receipt.getItems()
         .forEach(item -> item.setReceipt(receipt));
+    var exists = receiptRepository.existsByDateTimeAndTotalSum(receipt.getDateTime(), receipt.getTotalSum());
+    if (exists) {
+      return receipt;
+    }
     return receiptRepository.save(receipt);
   }
 
