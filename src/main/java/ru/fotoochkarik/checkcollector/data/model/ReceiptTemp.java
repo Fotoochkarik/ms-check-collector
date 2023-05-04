@@ -1,5 +1,6 @@
 package ru.fotoochkarik.checkcollector.data.model;
 
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,5 +26,11 @@ public class ReceiptTemp {
 
   @Column(name = "data")
   private String data;
+
+  @Column(name = "created")
+  private LocalDateTime created;
+
+  @Column(name = "request", unique = true)
+  private String request;
 
 }
