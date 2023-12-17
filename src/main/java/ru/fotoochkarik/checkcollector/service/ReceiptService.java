@@ -7,13 +7,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.fotoochkarik.checkcollector.data.dto.response.ReceiptInfo;
 import ru.fotoochkarik.checkcollector.data.mapper.ReceiptMapper;
 import ru.fotoochkarik.checkcollector.data.model.Receipt;
 import ru.fotoochkarik.checkcollector.data.model.ReceiptTemp;
 import ru.fotoochkarik.checkcollector.data.repository.ReceiptRepository;
 import ru.fotoochkarik.checkcollector.data.repository.ReceiptTempRepository;
 import ru.fotoochkarik.checkcollector.integration.feign.ExternalReceiptClient;
+import ru.fotoochkarik.generated.v1.dto.ReceiptInfo;
 
 @Slf4j
 @Service
@@ -60,7 +60,7 @@ public class ReceiptService {
 
   @Transactional
   public Receipt saveReceipt(ReceiptInfo receiptInfo) {
-    var receipt = receiptMapper.toReceipt(receiptInfo.dataInfo().bodyReceiptInfo());
+    var receipt = receiptMapper.toReceipt(receiptInfo.getData().getJson());
     receipt.getItems()
         .forEach(item -> item.setReceipt(receipt));
     var exists = receiptRepository.existsByDateTimeAndTotalSum(receipt.getDateTime(), receipt.getTotalSum());

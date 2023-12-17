@@ -1,0 +1,252 @@
+openapi: 3.0.3
+info:
+  title: 'ms-check-collector REST API'
+  description: REST API для работы check-collector
+  version: 1.0.0
+  contact:
+    email: schelkunovvv@gmail.com
+    name: Vitaliy Schelkunov
+servers:
+  - description: Developer Server
+    url: 'https://localhost:8080'
+tags:
+  - name: Public
+    description: Методы, доступные всем
+paths:
+  /receipt:
+    post:
+      tags:
+        - Public
+      operationId: createReceipt
+      summary: Создание записи
+      description: Создание записи
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReceiptRequest'
+      responses:
+        '200':
+          description: successfull
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReceiptShortInfo'
+#        '500':
+#          description: Unexpected error
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/BaseResponse'
+
+components:
+  schemas:
+    CreateReceiptRequest:
+      type: object
+      required:
+        - сreateRequest
+      properties:
+        сreateRequest:
+          type: string
+          description: Запрос на создание
+          example: t=20230504T2133&s=1345.90&fn=9960440301267581&i=22065&fp=102507340&n=1
+    ExpenseRequest:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ExpenseType'
+        sum:
+          type: number
+          format: double
+        payDate:
+          type: string
+          format: 'date'
+    ExpenseResponse:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ExpenseType'
+        sum:
+          type: number
+          format: double
+        totalSum:
+          type: number
+          format: double
+        year:
+          type: integer
+        month:
+          type: string
+          format: 'month'
+    ReceiptInfo:
+      type: object
+      properties:
+        code:
+          type: integer
+        data:
+          $ref: '#/components/schemas/DataInfo'
+    DataInfo:
+      type: object
+      properties:
+        html:
+          type: string
+        json:
+          $ref: '#/components/schemas/BodyReceiptInfo'
+    BodyReceiptInfo:
+      type: object
+      properties:
+        items:
+          type: array
+          description: Товары
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/ItemInfo'
+        nds10:
+          type: integer
+          format: int64
+        nds18:
+          type: integer
+          format: int64
+        nds0:
+          type: integer
+          format: int64
+        ndsNo:
+          type: integer
+          format: int64
+        fnsUrl:
+          type: string
+        dateTime:
+          type: string
+          format: date-time
+          example: '2017-01-15T01:30:15.01Z'
+        metadata:
+          $ref: '#/components/schemas/MetadataInfo'
+        totalSum:
+          type: integer
+          format: int64
+        creditSum:
+          type: integer
+          format: int64
+        prepaidSum:
+          type: integer
+          format: int64
+        cashTotalSum:
+          type: integer
+          format: int64
+        provisionSum:
+          type: integer
+          format: int64
+        eCashTotalSum:
+          type: integer
+          format: int64
+        retailPlace:
+          type: string
+        operationType:
+          type: integer
+        appliedTaxationType:
+          type: integer
+    ReceiptShortInfo:
+      type: object
+      required:
+        - totalSum
+        - dateTime
+      properties:
+        totalSum:
+          type: number
+          format: double
+        dateTime:
+          type: string
+          format: date-time
+          example: '2017-01-15T01:30:15.01Z'
+          description: Дата совершение покупок
+        items:
+          type: array
+          description: Товары
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/ItemShortInfo'
+    ItemShortInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Наименование товара
+        quantity:
+          type: integer
+          format: int64
+          description: Колличество
+        price:
+          type: integer
+          format: int64
+          description: Цена за единицу
+        sum:
+          type: integer
+          format: int64
+          description: Общая сумма
+    MetadataInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        ofdId:
+          type: string
+        address:
+          type: string
+        subtype:
+          type: string
+        receiveDate:
+          type: string
+          format: date-time
+          example: '2017-01-15T01:30:15.01Z'
+          description: Дата совершение покупок
+    ItemInfo:
+      type: object
+      properties:
+        nds:
+          type: integer
+          format: int64
+        ndsSum:
+          type: integer
+          format: int64
+        sum:
+          type: integer
+          format: int64
+        name:
+          type: string
+        price:
+          type: integer
+          format: int64
+        quantity:
+          type: integer
+          format: int64
+        paymentType:
+          type: integer
+        productType:
+          type: integer
+        productCodeInfo:
+          $ref: '#/components/schemas/ProductCodeInfo'
+    ProductCodeInfo:
+      type: object
+      properties:
+        kmk:
+          $ref: '#/components/schemas/ProductCodeDetails'
+        ean13:
+          $ref: '#/components/schemas/ProductCodeDetails'
+    ProductCodeDetails:
+      type: object
+      properties:
+        rawProductCode:
+          type: string
+        productIdType:
+          type: integer
+        gtin:
+          type: string
+        sernum:
+          type: string
+    ExpenseType:
+      type: string
+      enum:
+        - EVERYDAY
+        - DEBT
+        - COMMUNAL_SERVICE
+        - OTHER

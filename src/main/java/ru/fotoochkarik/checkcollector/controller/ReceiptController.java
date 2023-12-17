@@ -1,19 +1,17 @@
 package ru.fotoochkarik.checkcollector.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.fotoochkarik.checkcollector.component.ReceiptFacade;
-import ru.fotoochkarik.checkcollector.data.dto.request.ReceiptShortInfo;
-import ru.fotoochkarik.checkcollector.data.dto.request.SaveRequest;
 import ru.fotoochkarik.checkcollector.service.ReceiptService;
+import ru.fotoochkarik.generated.v1.api.PublicApi;
+import ru.fotoochkarik.generated.v1.dto.CreateReceiptRequest;
+import ru.fotoochkarik.generated.v1.dto.ReceiptShortInfo;
 
 /**
  * @author v.schelkunov
@@ -24,7 +22,7 @@ import ru.fotoochkarik.checkcollector.service.ReceiptService;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/receipt")
-public class ReceiptController {
+public class ReceiptController implements PublicApi {
 
   private final ReceiptService receiptService;
   private final ReceiptFacade receiptFacade;
@@ -35,10 +33,10 @@ public class ReceiptController {
     return receiptService.getJson(qrraw);
   }
 
-  @PostMapping
-  public ResponseEntity<ReceiptShortInfo> save(@RequestBody SaveRequest saveRequest) throws JsonProcessingException {
-    log.info("ReceiptController:: save request qrraw = {} ", saveRequest.qrraw());
-    return ResponseEntity.ok(receiptFacade.saveReceipt(saveRequest.qrraw()));
+  @Override
+  public ResponseEntity<ReceiptShortInfo> createReceipt(CreateReceiptRequest createReceiptRequest) throws Exception {
+        log.info("ReceiptController:: save request qrraw = {} ", createReceiptRequest.getСReateRequest());
+    return ResponseEntity.ok(receiptFacade.saveReceipt(createReceiptRequest.getСReateRequest()));
   }
 
 }

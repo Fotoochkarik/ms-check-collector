@@ -1,13 +1,11 @@
 package ru.fotoochkarik.checkcollector.data.mapper;
 
-import static java.util.Objects.nonNull;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.fotoochkarik.checkcollector.data.dto.request.ExpenseRequest;
-import ru.fotoochkarik.checkcollector.data.dto.request.ReceiptShortInfo;
-import ru.fotoochkarik.checkcollector.data.dto.response.BodyReceiptInfo;
 import ru.fotoochkarik.checkcollector.data.model.Receipt;
+import ru.fotoochkarik.generated.v1.dto.BodyReceiptInfo;
+import ru.fotoochkarik.generated.v1.dto.ExpenseRequest;
+import ru.fotoochkarik.generated.v1.dto.ReceiptShortInfo;
 
 /**
  * @author v.schelkunov
@@ -20,18 +18,14 @@ public interface ReceiptMapper {
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "metadata.id", ignore = true)
   @Mapping(target = "metadata.externalId", source = "metadata.id")
-  @Mapping(target = "totalSum", expression = "java(this.convert(bodyReceiptInfo.totalSum()))")
-  @Mapping(target = "creditSum", expression = "java(this.convert(bodyReceiptInfo.creditSum()))")
-  @Mapping(target = "prepaidSum", expression = "java(this.convert(bodyReceiptInfo.prepaidSum()))")
-  @Mapping(target = "cashTotalSum", expression = "java(this.convert(bodyReceiptInfo.cashTotalSum()))")
-  @Mapping(target = "provisionSum", expression = "java(this.convert(bodyReceiptInfo.provisionSum()))")
+  @Mapping(target = "totalSum", source = "totalSum", qualifiedByName = "convertToDouble")
+  @Mapping(target = "creditSum", source = "creditSum", qualifiedByName = "convertToDouble")
+  @Mapping(target = "prepaidSum", source = "prepaidSum", qualifiedByName = "convertToDouble")
+  @Mapping(target = "cashTotalSum", source = "cashTotalSum", qualifiedByName = "convertToDouble")
+  @Mapping(target = "provisionSum", source = "provisionSum", qualifiedByName = "convertToDouble")
   Receipt toReceipt(BodyReceiptInfo bodyReceiptInfo);
 
   ReceiptShortInfo toReceiptShortInfo(Receipt receipt);
-
-  default Double convert(Float value) {
-    return nonNull(value) ? (double) value / 100 : null;
-  }
 
   @Mapping(target = "sum", source = "totalSum")
   @Mapping(target = "payDate", source = "metadata.receiveDate")

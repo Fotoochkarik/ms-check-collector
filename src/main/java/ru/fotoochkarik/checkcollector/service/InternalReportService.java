@@ -2,9 +2,9 @@ package ru.fotoochkarik.checkcollector.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.fotoochkarik.checkcollector.data.dto.request.ExpenseRequest;
-import ru.fotoochkarik.checkcollector.data.dto.request.ExpenseResponse;
 import ru.fotoochkarik.checkcollector.integration.feign.InternalReportClient;
+import ru.fotoochkarik.generated.v1.dto.ExpenseRequest;
+import ru.fotoochkarik.generated.v1.dto.ExpenseResponse;
 
 @RequiredArgsConstructor
 @Service

@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.fotoochkarik.checkcollector.data.dto.request.ReceiptShortInfo;
 import ru.fotoochkarik.checkcollector.data.mapper.ReceiptMapper;
 import ru.fotoochkarik.checkcollector.service.InternalReportService;
 import ru.fotoochkarik.checkcollector.service.ReceiptService;
+import ru.fotoochkarik.generated.v1.dto.ReceiptShortInfo;
 
 /**
  * @author v.schelkunov

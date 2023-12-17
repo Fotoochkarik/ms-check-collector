@@ -7,8 +7,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.NullValueCheckStrategy;
-import ru.fotoochkarik.checkcollector.data.dto.response.ItemInfo;
 import ru.fotoochkarik.checkcollector.data.model.Item;
+import ru.fotoochkarik.generated.v1.dto.ItemInfo;
 
 /**
  * @author v.schelkunov
@@ -19,17 +19,17 @@ import ru.fotoochkarik.checkcollector.data.model.Item;
 public interface ItemMapper {
 
   @Mapping(target = "id", ignore = true)
-  @Mapping(target = "nds", source = "nds" , qualifiedByName = "convert")
-  @Mapping(target = "sum", expression = "java(this.convert(itemInfo.sum()))")
-  @Mapping(target = "price", expression = "java(this.convert(itemInfo.price()))")
-  @Mapping(target = "ndsSum", expression = "java(this.convert(itemInfo.ndsSum()))")
+  @Mapping(target = "nds", source = "nds" , qualifiedByName = "convertToDouble")
+  @Mapping(target = "sum", source = "sum" , qualifiedByName = "convertToDouble")
+  @Mapping(target = "price", source = "price" , qualifiedByName = "convertToDouble")
+  @Mapping(target = "ndsSum", source = "ndsSum" , qualifiedByName = "convertToDouble")
   Item toItem(ItemInfo itemInfo);
 
   List<Item> toItemList(List<ItemInfo> itemInfoList);
 
-  @Named("convert")
-  default Double convert(Long date) {
-    return nonNull(date) ? (double) date / 100 : null;
+  @Named("convertToDouble")
+  default Double convert(Long value) {
+    return nonNull(value) ? (double) value / 100 : null;
   }
 
 }

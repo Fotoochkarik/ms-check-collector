@@ -1,0 +1,71 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
+plugins {
+    id "org.openapi.generator" version "6.2.0"
+}
+
+apply plugin: 'java'
+apply plugin: 'java-library'
+apply plugin: 'org.openapi.generator'
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+
+afterEvaluate {
+    generateAll.call()
+}
+
+ext.generateAll = { ->
+    fileTree("${project(':ms-check-collector-api').projectDir}").matching {
+        include "*-v*.yaml"
+    }.each{
+        f ->
+            int from = f.name.lastIndexOf("v") + 1
+            int to = f.name.length() - 5
+            String version = f.name.substring(from, to)
+            String taskName = "openapi_generate_" + f.name
+            task(taskName, type: GenerateTask){
+                generatorName = "spring"
+                inputSpec = "${f.path}".toString()
+                outputDir = "${project(':ms-check-collector-api-generated').projectDir}".toString()
+                packageName = "ru.fotoochkarik.test"
+                apiPackage = "ru.fotoochkarik.generated.v" + version + ".api"
+                modelPackage = "ru.fotoochkarik.generated.v" + version + ".dto"
+                generateAliasAsModel = true
+                configOptions = [
+                        java8                      : "true",
+                        interfaceOnly              : "true",
+                        useTags                    : "true",
+                        openApiNullable            : "true",
+                        unhandledException         : "true"
+                ]
+
+                typeMappings = [
+                        "OffsetDateTime": "java.time.LocalDateTime",
+                        "month"         : "java.time.Month"
+                ]
+                importMappings = [
+                        "OffsetDateTime": "java.time.LocalDateTime",
+                        "Month"         : "java.time.Month"
+                ]
+            }
+            compileJava.dependsOn(taskName)
+    }
+}
+
+task deleteGeneratedSources(type: Delete){
+    delete "src"
+    delete "openapi"
+}
+
+clean.dependsOn(deleteGeneratedSources)
+
+dependencies {
+    api "org.springframework.boot:spring-boot-starter-web"
+
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.0.0'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.2'
+    implementation project(':ms-check-collector-api')
+}
+

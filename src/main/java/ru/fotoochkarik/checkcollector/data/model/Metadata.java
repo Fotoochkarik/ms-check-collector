@@ -1,6 +1,6 @@
 package ru.fotoochkarik.checkcollector.data.model;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -26,6 +26,6 @@ public class Metadata extends BaseEntity {
   private String address;
   private String subtype;
   @UpdateTimestamp
-  private ZonedDateTime receiveDate;
+  private LocalDateTime receiveDate;
 
 }

@@ -1,1 +1,3 @@
 rootProject.name = 'ms-check-collector'
+include 'ms-check-collector-api'
+include 'ms-check-collector-api-generated'

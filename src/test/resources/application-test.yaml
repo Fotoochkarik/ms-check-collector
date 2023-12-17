@@ -1,3 +1,41 @@
+spring:
+  jackson:
+    default-property-inclusion: non_null
+  jpa:
+    show-sql: false
+    hibernate:
+      use-new-id-generator-mappings: true
+      ddl-auto: validate
+    properties:
+      hibernate.id.new_generator_mappings: true
+      hibernate.globally_quoted_identifiers: true
+      hibernate.jdbc.lob.non_contextual_creation: true
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    open-in-view: true
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  datasource:
+    url: jdbc:postgresql://localhost::5432/receipt
+    username: test
+    password: password
+    driver-class-name: org.postgresql.Driver
+    tomcat:
+      max-wait: 10000
+      max-active: 50
+      test-on-borrow: true
+      max-idle: 10
+    hikari:
+      pool-name: ReceiptPool
+  liquibase:
+    enabled: true
+    change-log: 'classpath:db/changelog/db.changelog-master.yaml'
+    default-schema: receipt
+    liquibase-schema: receipt
 feign:
+  report:
+    host: http://localhost:9080/api/v1
   proverkacheka:
+    host: https://localhost/api/v1/check/get
     token: test

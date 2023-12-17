@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.fotoochkarik.checkcollector.data.dto.request.RequestInfo;
-import ru.fotoochkarik.checkcollector.data.dto.response.ReceiptInfo;
+import ru.fotoochkarik.generated.v1.dto.ReceiptInfo;
 
 @FeignClient(
     value = "proverka-cheka",
