@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.fotoochkarik.checkcollector.component.ReceiptFacade;
@@ -18,10 +17,9 @@ import ru.fotoochkarik.generated.v1.dto.ReceiptShortInfo;
  * @version 1.0.0
  * @since 1.0.0
  */
+@Slf4j
 @RestController
 @RequiredArgsConstructor
-@Slf4j
-@RequestMapping("/receipt")
 public class ReceiptController implements PublicApi {
 
   private final ReceiptService receiptService;
@@ -35,8 +33,8 @@ public class ReceiptController implements PublicApi {
 
   @Override
   public ResponseEntity<ReceiptShortInfo> createReceipt(CreateReceiptRequest createReceiptRequest) throws Exception {
-        log.info("ReceiptController:: save request qrraw = {} ", createReceiptRequest.getСReateRequest());
-    return ResponseEntity.ok(receiptFacade.saveReceipt(createReceiptRequest.getСReateRequest()));
+    log.info("ReceiptController:: save request qrraw = {} ", createReceiptRequest.getCreateRequest());
+    return ResponseEntity.ok(receiptFacade.saveReceipt(createReceiptRequest.getCreateRequest()));
   }
 
 }

@@ -97,6 +97,7 @@ dependencies {
     testImplementation 'io.zonky.test:embedded-database-spring-test:2.1.1'
     implementation 'io.zonky.test:embedded-postgres:2.0.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.instancio:instancio-core:3.7.1'
 }
 
 tasks.named('test') {

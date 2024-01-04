@@ -64,10 +64,7 @@ public class ReceiptService {
     receipt.getItems()
         .forEach(item -> item.setReceipt(receipt));
     var exists = receiptRepository.existsByDateTimeAndTotalSum(receipt.getDateTime(), receipt.getTotalSum());
-    if (exists) {
-      return receipt;
-    }
-    return receiptRepository.save(receipt);
+    return exists ? receipt : receiptRepository.save(receipt);
   }
 
 }

@@ -32,21 +32,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReceiptShortInfo'
-#        '500':
-#          description: Unexpected error
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/BaseResponse'
+        '400':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
 
 components:
   schemas:
     CreateReceiptRequest:
       type: object
       required:
-        - сreateRequest
+        - createRequest
       properties:
-        сreateRequest:
+        createRequest:
           type: string
           description: Запрос на создание
           example: t=20230504T2133&s=1345.90&fn=9960440301267581&i=22065&fp=102507340&n=1
@@ -250,3 +256,25 @@ components:
         - DEBT
         - COMMUNAL_SERVICE
         - OTHER
+
+    BaseResponse:
+      type: object
+      description: Базовый класс для всех ответов
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          description: Код операции от сервера
+          default: FCC-0000
+          example: FCC-0000
+        errorMessage:
+          type: string
+          description: Сообщение об ошибки, для отображения пользователю.
+        stackTrace:
+          type: string
+          description: StackTrace ошибки от сервера.
+        success:
+          type: boolean
+          default: true
+          description: true - запрос успешно обработан сервером

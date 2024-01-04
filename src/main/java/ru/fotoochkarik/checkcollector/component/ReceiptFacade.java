@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.fotoochkarik.checkcollector.data.mapper.ReceiptMapper;
+import ru.fotoochkarik.checkcollector.service.Checker;
 import ru.fotoochkarik.checkcollector.service.InternalReportService;
 import ru.fotoochkarik.checkcollector.service.ReceiptService;
 import ru.fotoochkarik.generated.v1.dto.ReceiptShortInfo;
@@ -25,6 +26,9 @@ public class ReceiptFacade {
 
   public ReceiptShortInfo saveReceipt(String request) throws JsonProcessingException {
     log.info("ReceiptFacade:: saveReceipt request = {} ", request);
+    if (!Checker.checkRequest(request)) {
+      throw new IllegalArgumentException(String.format("The request = %s does not meet the requirements", request));
+    }
     var receipt = receiptService.saveReceipt(request);
     internalReportService.addReceiptToReport(receiptMapper.toExpenseRequest(receipt));
     return receiptMapper.toReceiptShortInfo(receipt);
