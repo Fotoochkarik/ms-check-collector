@@ -20,8 +20,9 @@ apply plugin: 'application'
 apply plugin: 'io.freefair.lombok'
 
 ext {
-    springBootBomVersion = "2.6.4"
-    mapstructVersion = "1.5.1.Final"
+    set('springCloudVersion', "2021.0.7")
+    set('springBootBomVersion', "2.6.4")
+    set('mapstructVersion', "1.5.1.Final")
 }
 
 allprojects {
@@ -37,6 +38,7 @@ allprojects {
     dependencyManagement {
         imports {
             mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootBomVersion}"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
         }
     }
 }
@@ -48,13 +50,8 @@ subprojects {
     dependencyManagement {
         imports {
             mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootBomVersion}"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
         }
-    }
-}
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
     }
 }
 
@@ -74,13 +71,16 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.2'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'io.github.openfeign.form:feign-form-spring:3.8.0'
     implementation 'io.github.openfeign.form:feign-form:3.8.0'
+    implementation 'io.github.openfeign:feign-okhttp'
 
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
-    implementation 'org.springframework.cloud:spring-cloud-starter-config:3.0.0'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
