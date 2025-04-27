@@ -33,9 +33,13 @@ spring:
     change-log: 'classpath:db/changelog/db.changelog-master.yaml'
     default-schema: receipt
     liquibase-schema: receipt
+eureka:
+  client:
+    enabled: false
 feign:
   report:
     host: http://localhost:9080/api/v1
   proverkacheka:
     host: https://localhost/api/v1/check/get
     token: test
+host: localhost

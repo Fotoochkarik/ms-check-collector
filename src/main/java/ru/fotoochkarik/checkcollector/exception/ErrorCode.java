@@ -9,9 +9,9 @@ public enum ErrorCode {
   FCC_2("FCC-0002");
 
   ErrorCode(String value) {
+    this.value = value;
   }
 
-  @Getter
-  String value;
+  final String value;
 
 }

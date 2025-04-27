@@ -37,13 +37,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BaseResponse'
+                $ref: '#/components/schemas/ExceptionMessageResponse'
         '500':
           description: Unexpected error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BaseResponse'
+                $ref: '#/components/schemas/ExceptionMessageResponse'
 
 components:
   schemas:
@@ -188,6 +188,11 @@ components:
           type: integer
           format: int64
           description: Общая сумма
+      required:
+        - name
+        - quantity
+        - price
+        - sum
     MetadataInfo:
       type: object
       properties:
@@ -256,13 +261,18 @@ components:
         - DEBT
         - COMMUNAL_SERVICE
         - OTHER
-
-    BaseResponse:
+    ExceptionMessageResponse:
       type: object
-      description: Базовый класс для всех ответов
-      required:
-        - code
+      description: Базовая модель ответа на исключительные ситуации
       properties:
+        status:
+          type: integer
+          description: Код статуса запроса
+          example: 404
+        source:
+          type: string
+          description: Сервис источник ошибки
+          example: ms-some-service
         code:
           type: string
           description: Код операции от сервера
@@ -270,11 +280,14 @@ components:
           example: FCC-0000
         errorMessage:
           type: string
-          description: Сообщение об ошибки, для отображения пользователю.
+          description: Сообщение об ошибки, для отображения пользователю
         stackTrace:
           type: string
-          description: StackTrace ошибки от сервера.
+          description: StackTrace ошибки от сервера
         success:
           type: boolean
           default: true
           description: true - запрос успешно обработан сервером
+      required:
+        - code
+        - status
